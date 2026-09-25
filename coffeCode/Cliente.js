@@ -1,150 +1,165 @@
 const readline = require('readline');
+const cocina = require ("./cocina");
+const caja = require ("./caja");
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-const opcionesMenu = [
-    { id: '1', nombre: 'Consultar Productos Disponibles'},
-    { id: '2', nombre: ' Ver las Promociones del Día'},
-    { id: '3', nombre: 'Crear pedido de Productos'},
-    { id: '4', nombre: 'Listar Pedidos Realizados'},
-    {id: '5', nombre: 'Salir'}
-];
+function menuPrincipal(){
+    console.log("\n=====================");
+    console.log("SISTEMA CAFETERÍA");
+    console.log("=======================");
+    console.log("1.Clientes");
+    console.log("2.Cocina");
+    console.log("3.Caja");
+    console.log("4.Salir");
 
-const productos = [
-    { id: 1, nombre: 'Café Americano', precio: 40, disponible: true},
-    { id: 2, nombre: 'Café Italiano', precio: 45, disponible: true},
-    { id: 3, nombre: 'Pan de Muerto', precio: 15, disponible: true}
-];
-
-const promociones = [
-{ productoId: 1, descuento: 20, descripcion: '20% de descuento en Café Americano'},
-{ productoId: 2, descuento: 15, descripcion: '15% de descuento en Pan de Muerto'}
-];
-
-const pedidos = [];
-
-function mostrarMenu() {
-    console.log('\n=====================');
-    console.log('    MENÚ PRINCIPAL   ');
-    console.log('========================');
-
-    const menuFormateado = opcionesMenu.map(opc => `${opc.id}.${opc.nombre}`).join('\n');
-    console.log(menuFormateado);
-console.log('========================');
-
-rl.question('\nSeleccione una opcion (1-5): ', opcion =>{
-    procesarOpcion(opcion);
-});
-}
-
-function consultarProductosDisponibles(){
-    console.log('\n---Productos Disponibles---');
-    let hayDisponibles = true;
-    productos.forEach(p =>{
-        if(p.disponibles){
-            console.log(`id:${p.id} | nombre: ${p.nombre} | precio: $${p.precio} | estado: disponible`);
-            hayDisponibles = true;
+    rl.question("\nSeleccione una opcion: ", opcion =>{
+        if(opcion === "1"){
+            menuClientes();
+        }
+        else if(opcion === "2"){
+            cocina.menuCocina(rl, menuPrincipal);
+        }
+        else if(opcion === "3"){
+            caja.menuCaja(rl, menuPrincipal);
+        }
+        else if(opcion === "4"){
+            console.log("Hasta luego");
+        }
+        else{
+            console.log("Opcion invalida");
+            menuPrincipal();
         }
     });
-if(!hayDisponibles){
-    console.log('Por el momento no hay productos disponibles.');
+}
+const opcionesMenu =[
+    {id: "1", nnombre: "Consultar productos"},
+    {id: "2", nombre: "Ver promociones"},
+    {id: "3", nombre: "Crear pedido"},
+    {id: "4", nombre: "Listar pedidos"},
+    {id: "5", nombre: "Regresar"}
+];
 
-}
-mostrarMenu();
-}
-function verPromociones (){
-    console.log('\n---Promociones Activas---');
-    const listaPromos =promociones.map(promo =>{
-        const prod =productos.find(p=> p.id ---promo.productoId);
-        const precioConDescuento = prod ? prod.precio * (1 - promo.descuento / 100) : 0;
-        return `${promo.descripcion} -> Precio original: $${prod.precio} | Precio promo: $${precioConDescuento}`;
+const promociones =[
+{productoId: 1, descuento: 20, descripcion: "20% de descuento en Cafésin azucar"},
+{productoId: 2, descuento: 15, descripcion: "15% de descuento en Café con leche"}
+];
+
+function menuClientes(){
+    console.log("\n---MENÚ CLIENTES---");
+
+    opcionesMenu.map(opcion => `${opcion.id}. ${opcion.nombre}`)
+    forEach(opcion => console.log(opcion));
+
+    rl.question("\nSelecciona una opcion: ", opcion =>{
+
+        switch(opcion){
+            case"1":
+            cocina.listar();
+            menuClientes();
+            break;
+
+            case "2":
+                verPromociones();
+                break;
+
+                case "3":
+                    crearPedido();
+                    break;
+
+                    case"4":
+                    menuClientes();
+                    break;
+
+                    case"5":
+                    menuPrincipal();
+                    break;
+
+                    default:
+                        console.log("Opcion invalida");
+                        menuClientes();
+        }
     });
-
-    listaPromos.forEach(p => console.log(p));
-    mostrarMenu();
 }
 
+function verPromociones(){
+    console.log("\n--PROMOCIONES--");
+    promociones.map(promo =>{
+        const producto = cocina.obtenerProducto(promo.productoId);
+        const precio = producto.precio * (1-promo.descuento/100);
+        return`${promo.descripcion} | Precio: $${precio}`;
+    })
+    .forEach(promo => console.log(promo));
+
+    menuClientes();
+}
 function crearPedido(){
-    console.log('\n---Crear Nuevo Pedido---');
-    const disponibles = productos.filter(p => p.disponible);
-    disponibles.forEach(p =>{
-        console.log(`${p.id}. ${p.nombre} ($${p.precio})`);
-    });
-    rl.question('\nIngrese el ID del producto que desea pedir: ',(idInput) =>{
-        const idProd = parseInt(idInput);
-        const productoEncontrado = disponibles.find(p => p.id === idProd);
-        if(productoEncontrado){
-            const nuevoPedido ={
-                idPedido: pedidos.length + 1,
-                producto: productoEncontrado.nombre,
-                precio: productoEncontrado.precio,
-                fecha: new Date().toLocaleTimeString(),
-                estado: 'Pedido recibido'
-            };
-            pedidos.push(nuevoPedido);
-            console.log(productoEncontrado.nombre);
-            console.log(`\n¡Pedido agregado con exito! (${productoEncontrado.nombre}`);
-            console.log(`Estado: ${nuevoPedido.estado}]`);
+    console.log("\n--CREAR PEDIDO--");
+    cocina.listar();
+    rl.question("\nID del producto", id =>{
+        const producto = cocina.obtenerProducto(Number(id));
 
-            setTimeout(() =>{
-                nuevoPedido.estado = 'Preparando...';
-                console.log(`\n[Notificación Pedido #${nuevoPedido.idPedido}]: ${nuevoPedido.estado}`);
-            }, 2000); //2 segundos
-
-            setTimeout(() => {
-                nuevoPedido.estado = 'Empacando...';
-                console.log(`[Notificación Pedido #${nuevoPedido.idPedido}]: ${nuevoPedido.estado}`);
-            }, 4000);//4 segundos
-
-            setTimeout(() => {
-                nuevoPedido.estado = '¡Pedido Entregado!';
-                console.log(`[Notificación Pedido #${nuevoPedido.idPedido}]: ${nuevoPedido.estado}\n`);
-            }, 6000);//6segundos
-            
-        }else{
-            console.log('\n!No se encontro el producto o no esta disponible¡');
+        if(!producto){
+            console.log("Producto no encontrado");
+            menuClientes();
+            return;
         }
-        mostrarMenu();
+        const pedido = {
+            idPedido: caja.pedidos.length + 1,
+            producto: producto.nombre,
+            precio: producto.precio,
+            subtotal: producto.precio,
+            estado: "recibido"
+        };
+
+        caja.agregarPedido(pedido);
+        console.log(`Pedido #${pedido.idPedido}: recibido.`);
+        procesarPedido(pedido);
     });
-}
-function listarPedidosRealizados(){
-    console.log('\n---Pedidos Realizados---');
-    if(pedidos.length === 0){
-        console.log('Aun no hay pedidos registrados');
-    }else{
-        pedidos.forEach(p =>{
-            console.log(`Pedido #${p.idPedido} | Producto: ${p.producto} | Total: $${p.precio} | Hora: ${p.fecha}`);
-        });
-    }
-}
-    mostrarMenu();
+    function procesarPedido(pedido){
+        console.log("\n1.Pedido normal");
+        console.log("2.Error en cocina");
+        console.log("3.Falta ingrediente");
+        rl.question("Selecciona: ", opcion =>{
+            setTimeout(()=>{
+                pedido.estado ="preparando";
+                console.log(`Pedido #${pedido.idPedido}: Preparando...`);
+                cocina.prepararPedido(pedido, opcion)
+                .then(() =>{
+                    setTimeout(() =>{
+                        pedido.estado ="empacando";
+                        console.log(`Pedido #${pedido.idPedido}: Empacando...`);
+                        setTimeout(() =>{
+                            pedido.estado ="listo";
+                            console.log(`Pedido #${pedido.idPedido}: ¡Listo!`);
+                            caja.notificarPedidoListo(mensaje => console.log(mensaje));
+                            setTimeout(() =>{
+                                pedido.estado = "entregado";
+                                console.log(`Pedido #${pedido.idPedido}: Entregado.`);
+                                menuClientes();
+                            },1000);
+                        },1000);
+                    },1000);
+                            })
+                            .catch(error =>{
+                                pedido.estado ="cancelado";
+                                pedido.motivoCancelacion = error;
 
-function procesarOpcion(opcion) {
-    switch (opcion) {
-        case '1':
-            consultarProductosDisponibles();
-            break;
-        case '2':
-            verPromociones();
-            break;
-        case '3':
-            crearPedido();
-            break;
-        case '4':
-            listarPedidosRealizados();
-            break;
-        case '5':
-            console.log('\n¡Gracias por comprar en nuestra cafeteria! Hasta luego');
-            rl.close();
-            break;
-        default:
-            console.log('\nOpción no válida. Intente nuevamente.');
-            mostrarMenu();
-            break;
-    }
-}
+                                console.log(`Pedido #${pedido.idPedido}: Cancelado.`);
+                                console.log(`Motivo: ${error}`);
 
-mostrarMenu();
+                                caja.notificarPedidoCancelado(mensaje => console.log(mensaje));
+                                menuClientes();
+                            });
+                        },1000);
+                        });
+
+                    }
+                }
+                menuPrincipal();
+            
+        
+    
