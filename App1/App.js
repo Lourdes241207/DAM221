@@ -19,11 +19,11 @@ export default function App() {
       <Saludo2></Saludo2> */}
       
       
-      <Perfil nombre="Lourdes" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
+      <Perfil style={styles.tarjeta1}nombre="Lourdes" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
 
-      <Perfil nombre="Renata" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
+      <Perfil style={styles.tarjeta2}nombre="Renata" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
 
-      <Perfil nombre="Luisa" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
+      <Perfil style={styles.tarjeta3}nombre="Luisa" carrera="ITIID" materia="Moviles" cuatrimestre="4"/>
 
       <StatusBar style="auto" />
     </View>
@@ -35,7 +35,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    flexDirection:'colum',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tarjeta1:{backgroundColor:'lightblue'},
+  tarjeta2:{backgroundColor:'lightpink'},
+  tarjeta3:{backgroundColor:'blueviolet'}
 });
