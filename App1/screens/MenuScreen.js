@@ -1,49 +1,41 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-
-// Importa aquí tus pantallas secundarias
-// import TarjetasScreen from './TarjetasScreen';
-// import SafeScreen from './SafeScreen';
+import SafeScreen from './SafeScreen';
+import PressableScreen from './PressableScreen';
+import { ScrollView } from 'react-native';
 
 export default function MenuScreen() {
   // Aseguramos que el estado inicial sea 'menu'
   const [screen, setScreen] = useState('menu');
 
-  // Función para volver al menú desde cualquier pantalla
-  const goBack = () => setScreen('menu');
-
-  // Renders condicionales según la pantalla seleccionada
-  if (screen === 'tarjetas') {
-    return <TarjetasScreen goBack={goBack} />;
-  }
-  if (screen === 'safe') {
-    return <SafeScreen goBack={goBack} />;
-  }
-  if (screen === 'pressable') {
-    return <PressableScreen goBack={goBack} />;
-  }
-  if (screen === 'textinput') {
-    return <TextInputScreen goBack={goBack} />;
-  }
-  if (screen === 'flatlist') {
-    return <FlatScreen goBack={goBack} />;
-  }
-  if (screen === 'imagebackgroung') {
-    return <ImageBackgroungScreen goBack={goBack} />;
-  }
-  if (screen === 'modal') {
-    return <ModalScreen goBack={goBack} />;
-  }
-  if (screen === 'activity') {
-    return <ActivityIndicatorScreen goBack={goBack} />;
-  }
-
+ switch (screen){
+  case 'tarjetas':
+    contenido = <TarjetasScreen/>
+  case 'safeScreen':
+    contenido = <SafeScreen/>;
+    break;
+  case 'pressable':
+    contenido = <PressableScreen/>;
+  break;
+  case 'textinput':
+    contenido = <TextInputScreen/>
+  break;
+  case 'flat':
+    contenido = <FlatScreen/>;
+  break;
+  case 'image':
+    contenido = <ImageBacgroundScreen/>;
+  break;
+  case 'modal':
+    contenido = <ModalScreen/>;
+  break;
+  default:
   // Vista principal del Menú
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Menu de Practicas</Text>
 
-      <View style={styles.buttonContainer}>
+      
         <Button title="PRACT: TARJETAS" onPress={() => setScreen('tarjetas')} />
         <Button title="PRACT: SAFEAREAVIEW" onPress={() => setScreen('safe')} />
         <Button title="PRACT: PRESSABLE" onPress={() => setScreen('pressable')} />
@@ -52,11 +44,12 @@ export default function MenuScreen() {
         <Button title="PRACT: IMAGEBACKGROUND" onPress={() => setScreen('imagebackgroung')} />
         <Button title="PRACT: MODAL" onPress={() => setScreen('modal')} />
         <Button title="PRACT: ACTIVITYINDICATOR" onPress={() => setScreen('activity')} />
-      </View>
-    </View>
+    </ScrollView> 
+    
   );
+
 }
-//switch
+}//switch
 //funcion
 
 /*3.Zona de estilos y posicionamiento*/
