@@ -59,14 +59,47 @@ export default function FlatScreen() {
     )}
   </SafeAreaView>
 );
-
+}
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: '#fff' },
-  nav: { flexDirection: 'row', justifyContent: 'center', marginBottom: 15 },
-  btn: { backgroundColor: '#2563eb', padding: 8, marginHorizontal: 5, borderRadius: 4 },
+  container: {
+    flex: 1,
+    padding: 15,
+    backgroundColor: '#fff'
+  },
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15
+  },
+  btn: {
+    backgroundColor: '#2563eb',
+    padding: 8,
+    marginHorizontal: 5,
+    borderRadius: 4
+  },
   content: { flex: 1 },
-  sub: { fontSize: 16, fontWeight: 'bold', marginBottom: 8 },
-  card: { backgroundColor: '#f8fafc', padding: 10, marginVertical: 3, borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 4 },
-  header: { fontSize: 15, fontWeight: 'bold', backgroundColor: '#e2e8f0', padding: 6, marginTop: 8 },
-  txt: { color: '#fff', fontWeight: 'bold' }
-})
+  sub: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8
+  },
+  card: {
+    backgroundColor: '#f8fafc',
+    padding: 10,
+    marginVertical: 3,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 6
+  },
+  header: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    backgroundColor: '#e2e8f0',
+    padding: 6,
+    marginTop: 8
+  },
+  txt: {
+    color: '#fff',
+    fontWeight: 'bold'
+  }
+});

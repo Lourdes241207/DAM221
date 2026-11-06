@@ -1,14 +1,79 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+// 1. Importaciones
+import { useState, useEffect } from 'react';
+import {View, Text, ImageBackground, Pressable, StyleSheet} from 'react-native';
 
-export default function ImageBackgroundScreen() {
+// 2. Componente principal
+export default function SplashScreen() {
+
+  // Estado para cambiar entre día y noche
+  const [noche, setNoche] = useState(false);
+
+  // Estado para controlar el Splash Screen
+  const [cargando, setCargando] = useState(true);
+
+  // Temporizador del Splash Screen
+  useEffect(() => {
+    const temporizador = setTimeout(() => {
+      setCargando(false);
+    }, 2000);
+
+    return () => clearTimeout(temporizador);
+  }, []);
+
+  // Pantalla de bienvenida
+  if (cargando) {
     return (
-       <View></View>
+      <View style={styles.splash}>
+        <Text style={styles.splashTitle}>
+          Bienvenido
+        </Text>
+
+        <Text style={styles.splashDescription}>
+          Mi Aplicación
+        </Text>
+      </View>
     );
-};
+  }
 
+  return (
+    <ImageBackground
+      source={
+        noche
+          ? require('../assets/noche.jpg')
+          : require('../assets/dia.jpg')
+      }
+      style={styles.background}
+      resizeMode="cover"
+    >
 
+      <View style={styles.overlay}>
 
+        <Text style={styles.title}>
+          Ejemplo de Background
+        </Text>
+
+        <Text style={styles.description}>
+          {noche
+            ? 'Actualmente es de noche'
+            : 'Actualmente es de día'}
+        </Text>
+
+        <Pressable
+          style={styles.button}
+          onPress={() => setNoche(!noche)}
+        >
+          <Text style={styles.buttonText}>
+            {noche ? 'Cambiar a día' : 'Cambiar a noche'}
+          </Text>
+        </Pressable>
+
+      </View>
+
+    </ImageBackground>
+  );
+}
+
+// 3. Estilos
 const styles = StyleSheet.create({
 
   splash: {
