@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {View, Text, ImageBackground, Pressable, StyleSheet} from 'react-native';
 
 // 2. Componente principal
-export default function SplashScreen() {
+export default function ImageBackgroundScreen() {
 
   // Estado para cambiar entre día y noche
   const [noche, setNoche] = useState(false);

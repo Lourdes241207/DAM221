@@ -30,6 +30,7 @@ export default function FlatScreen() {
         {vistaActual=== 'Flat' ?(
            <View style={styles.content}>
            <Text style={styles.sub}>FlatList</Text>
+
            <FlatList data={serviciosFlat} 
            keyExtractor={(item) => item.id}
            renderItem={({ item }) => (
@@ -39,6 +40,9 @@ export default function FlatScreen() {
            )}>
 
             </FlatList> 
+
+
+            
            </View>
         ) : (
       <View style={styles.content}>

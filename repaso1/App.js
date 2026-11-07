@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  StyleSheet,Text,View,TextInput,TouchableOpacity,ScrollView, Alert} from 'react-native';
+import {StyleSheet,Text,View,TextInput,TouchableOpacity,ScrollView, Alert} from 'react-native';
 
 export default function App() {
   const [nombre, setNombre] = useState('');
