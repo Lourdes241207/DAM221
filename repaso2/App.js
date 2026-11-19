@@ -29,7 +29,6 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  //pantalla de bienvenida
  // Pantalla de bienvenida
 if (isLoadingSplash) {
   return (

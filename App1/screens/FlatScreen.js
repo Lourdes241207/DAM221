@@ -22,6 +22,7 @@ export default function FlatScreen() {
         </TouchableOpacity>
        
         <TouchableOpacity style = {styles.btn} onPress={() => 
+        
             setVistaActual('section')}>
         <Text style ={styles.txt}>SectionList</Text>
         </TouchableOpacity>
