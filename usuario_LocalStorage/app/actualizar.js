@@ -1,45 +1,68 @@
 import React, { useState } from 'react';
-import { SafeAreaView,View,Text, TextInput, Pressable, StyleSheet,} from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-
+import { SafeAreaView,View,Text,TextInput,Pressable,StyleSheet,Alert} from 'react-native';
+import {useLocalSearchParams,router} from 'expo-router';
+import {actualizarUsuario as actualizarUsuarioService} from '../services/usuariosService';
 
 export default function ActualizarUsuarioScreen() {
-  const params=useLocalSearchParams();
+  const params = useLocalSearchParams();
+  const [nombre, setNombre] = useState(
+    String(params.nombre ?? '')
+  );
 
-  const[nombre,setNombre]=useState(params.nombre);
-  const[edad,setEdad]=useState(params.edad);
+  const [edad, setEdad] = useState(
+    String(params.edad ?? '')
+  );
 
-  const actualizarUsuario=()=>{}
+  // GUARDAR CAMBIOS
+  const guardarCambios = async () => {
+    try {
+      const usuarioActualizado = await actualizarUsuarioService(
+        params.id,
+        nombre,
+        edad
+      );
 
+      Alert.alert(
+        'Éxito',
+        'Usuario actualizado correctamente'
+      );
 
+      router.replace({
+        pathname: '/detalle',
+        params: {
+          id: usuarioActualizado.id,
+          nombre: usuarioActualizado.nombre,
+          edad: String(usuarioActualizado.edad)
+        }
+      });
 
+    } catch (error) {
 
+      Alert.alert('Error', error.message);
 
+    }
+
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
 
+    <SafeAreaView style={styles.container}>
       <Text style={styles.titulo}>
         Actualizar Usuario
       </Text>
-
       <View style={styles.card}>
-
         <Text style={styles.label}>
           Nombre
         </Text>
-
         <TextInput
           style={styles.input}
           value={nombre}
           onChangeText={setNombre}
           placeholder="Nombre"
         />
-
         <Text style={styles.label}>
           Edad
         </Text>
-
         <TextInput
           style={styles.input}
           value={edad}
@@ -47,20 +70,18 @@ export default function ActualizarUsuarioScreen() {
           placeholder="Edad"
           keyboardType="numeric"
         />
-
         <Pressable
           style={styles.boton}
-          onPress={actualizarUsuario}
+          onPress={guardarCambios}
         >
           <Text style={styles.textoBoton}>
             Guardar cambios
           </Text>
         </Pressable>
-
       </View>
-
     </SafeAreaView>
   );
+
 }
 
 const styles = StyleSheet.create({
